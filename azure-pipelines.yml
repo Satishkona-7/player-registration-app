@@ -1,7 +1,7 @@
 trigger:
   branches:
     include:
-      - dev
+      - Dev
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -12,6 +12,8 @@ variables:
 
 steps:
 
+- checkout: self
+
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '3.11'
@@ -21,17 +23,9 @@ steps:
     pip install -r requirements.txt
   displayName: 'Install dependencies'
 
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
-    includeRootFolder: false
-    archiveType: zip
-    archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
-    replaceExistingArchive: true
-
 - task: AzureWebApp@1
   inputs:
     azureSubscription: '$(azureSubscription)'
     appType: 'webAppLinux'
     appName: '$(appName)'
-    package: '$(Build.ArtifactStagingDirectory)/app.zip'
+    package: '$(System.DefaultWorkingDirectory)'
