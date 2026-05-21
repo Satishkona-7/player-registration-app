@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Registration</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="top-bar">
+
+        <h1>🏆 Player Registration Portal</h1>
+
+        {% if has_players %}
+            <a href="/players" class="view-btn">
+                View Registered Players
+            </a>
+        {% else %}
+            <button class="disabled-btn" disabled>
+                No Registered Players
+            </button>
+        {% endif %}
+
+    </div>
+
+    <form action="/register" method="POST">
+
+        <label>Player Name</label>
+        <input type="text" name="name" required>
+
+        <label>Age</label>
+        <input type="number" name="age" required>
+
+        <label>Sport</label>
+        <select name="sport" required>
+            <option value="">Select Sport</option>
+            <option>Cricket</option>
+            <option>Football</option>
+            <option>Basketball</option>
+            <option>Tennis</option>
+            <option>Badminton</option>
+        </select>
+
+        <label>Team Name</label>
+        <input type="text" name="team" required>
+
+        <label>Email</label>
+        <input type="email" name="email" required>
+
+        <button type="submit">Register Player</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
