@@ -1,0 +1,30 @@
+trigger:
+  branches:
+    include:
+      - Dev
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  dockerHubRepo : satishkona/form-app
+  imageTag: '$(Build.BuildId)'
+  azureSubscription: 'testapp'
+  webAppName: 'web-test-app-256'
+
+steps:
+- task: Docker@2
+  displayName: Build and Push
+  inputs:
+    containerRegistry: 'Dockerhub-con'
+    repository: '$(dockerHubRepo)'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    tags: '$(imageTag)'
+
+- task: AzureWebAppContainer@1
+  displayName: Deploy Container
+  inputs:
+    azureSubscription: '$(azureSubscription)'
+    appName: '$(webAppName)'
+    containers: '$(dockerHubRepo):$(imageTag)'
