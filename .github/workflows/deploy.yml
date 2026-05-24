@@ -39,7 +39,8 @@ jobs:
   deploy-to-azure:
     needs: build-and-push
     runs-on: ubuntu-latest
-
+    environment: Dev
+    
     steps:
 
     - name: Azure Login
