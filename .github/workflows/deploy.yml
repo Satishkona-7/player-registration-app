@@ -46,9 +46,9 @@ jobs:
 
     - name: Set Image Tag
       run: echo "IMAGE_TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
-      
+
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
         app-name: webappservice
-        images: ${{ secrets.DOCKER_USERNAME }}/player-registration-app:$IMAGE_TAG
+        images: ${{ secrets.DOCKER_USERNAME }}/player-registration-app:${{ env.IMAGE_TAG }}
