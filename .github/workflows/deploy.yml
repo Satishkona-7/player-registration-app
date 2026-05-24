@@ -1,13 +1,16 @@
 name: Build and Deploy Flask App
 
 on:
-  push:
+  pull_request:
     branches:
       - Dev
+    types:
+      - closed
 
 jobs:
 
   build-and-push:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -22,7 +25,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Set Image Tag
-      run: echo "IMAGE_TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
+      run: echo "IMAGE_TAG=${ {github.event.pull_request.merge_commit_sha }}" >> $GITHUB_ENV
 
 
     - name: Build Docker Image
@@ -45,7 +48,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Set Image Tag
-      run: echo "IMAGE_TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
+      run: echo "IMAGE_TAG=${{ github.event.pull_request.merge_commit_sha }}" >> $GITHUB_ENV
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
