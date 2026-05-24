@@ -25,7 +25,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Set Image Tag
-      run: echo "IMAGE_TAG=${ {github.event.pull_request.merge_commit_sha }}" >> $GITHUB_ENV
+      run: echo "IMAGE_TAG=$(echo ${{ github.event.pull_request.merge_commit_sha }} | cut -c1-7)" >> $GITHUB_ENV
 
 
     - name: Build Docker Image
@@ -48,7 +48,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Set Image Tag
-      run: echo "IMAGE_TAG=${{ github.event.pull_request.merge_commit_sha }}" >> $GITHUB_ENV
+      run: echo "IMAGE_TAG=$(echo ${{ github.event.pull_request.merge_commit_sha }} | cut -c1-7)" >> $GITHUB_ENV
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
